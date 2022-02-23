@@ -101,3 +101,201 @@ function theHtml(lastArr) {
       </html>`;
 }
 
+function generateHtml(arr) {
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] instanceof Engineer) {
+            lastHtmlArray.push(engineerHtml(arr[i]));
+        } else if (arr[i] instanceof Manager) {
+            lastHtmlArray.push(managerHtml(arr[i]));
+        } else if (arr[i] instanceof Intern) {
+            lastHtmlArray.push(internHtml(arr[i]));
+        }
+    }
+    return theHtml(lastHtmlArray.join(' '));
+}
+
+const theQuestions = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is your name?',
+        validate: (name) => {
+            return name ? true : 'You must add a name';
+        },
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'What is your id?',
+        validate: (id) => {
+            var valid = !isNaN(id);
+            return valid ? true : 'You must add an id with a number';
+        },
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'What is your email?',
+        validate: (email) => {
+        valid = email.indexOf('@');
+        if (valid !== -1) {
+            return true;
+        } else {
+            return 'You must enter a valid email address';
+        }
+        },
+    },
+    {
+        type: 'input',
+        name: 'officeNumber',
+        message: 'What is your office number?',
+        validate: (officeNumber) => {
+            var valid = !isNaN(officeNumber);
+            return valid ? true : 'You must enter a valid office number using numbers only'
+        },
+    },
+    {
+        type: 'list',
+        name: 'create',
+        message: 'Would you like to create a new Engineer, Inter or Complete?',
+        choices: ['Engineer', 'Inter', 'Complete'],
+    },
+];
+
+const engineerQuestions = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is your name?',
+        validate: (name) => {
+            return name ? true : 'You must add a name.'
+        },
+    },
+    {
+        type: 'inout',
+        name: 'id',
+        message: 'what is your id?',
+        validate: (id) => {
+            var valid = !isNaN(id);
+            return valid ? true : 'You must add an id with a number. '
+        },
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'What is you email?',
+        validate: function (email) {
+            valid = email.indexOf('@');
+            if (valid !== -1) {
+                return true;
+            } else {
+                return 'You must enter a valid email address';
+            }
+        },
+    },
+    {
+        type: 'input',
+        name: 'github',
+        message: 'What is your Github user name?',
+        validate: (github) => {
+return github ? true : 'You must enter your Github user name.'
+        },
+    },
+    {
+        type: 'list',
+        name: 'create',
+        message: 'Would you like to create a new Engineer, Inter or Complete?',
+        choices: ['Engineer', 'Inter', 'Complete'],
+    },
+];
+
+function askEngineerQuestions() {
+    inquirer.prompt(engineerQuestions).then((data) => {
+        const engineer = new Engineer(data.name, data.id, data.email, data.github);
+        users.push(engineer);
+        if (data.create == 'Engineer') {
+            askEngineerQuestions();
+        } else if (data.create == 'Intern') {
+        askInternQuestions();
+        } else if (data.create == 'Complete') {
+            fs.writeFileSync('./dist/index.html', generateHtml(users));
+        }
+    });
+}
+
+const internQuestions = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is your name?',
+        validate: (name) => {
+            return name ? true : 'You must add a name.'
+        },
+    },
+    {
+        type: 'inout',
+        name: 'id',
+        message: 'what is your id?',
+        validate: (id) => {
+            var valid = !isNaN(id);
+            return valid ? true : 'You must add an id with a number. '
+        },
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'What is you email?',
+        validate: function (email) {
+            valid = email.indexOf('@');
+            if (valid !== -1) {
+                return true;
+            } else {
+                return 'You must enter a valid email address';
+            }
+        },
+    },
+    {
+        type: 'input',
+        name: 'school',
+        message: 'What is your school name?',
+        validate: (school) => {
+return school ? true : 'You must enter your school name.'
+        },
+    },
+    {
+        type: 'list',
+        name: 'create',
+        message: 'Would you like to create a new Engineer, Inter or Complete?',
+        choices: ['Engineer', 'Inter', 'Complete'],
+    },
+];
+
+function askInternQuestions() {
+    inquirer.prompt(internQuestions).then((data) => {
+        const intern = new Intern(data.name, data.id, data.email, data.school);
+        users.push(intern);
+        if (data.create == 'Engineer') {
+            askEngineerQuestions();
+        } else if (data.create == 'Intern') {
+        askInternQuestions();
+        } else if (data.create == 'Complete') {
+            fs.writeFileSync('./dist/index.html', generateHtml(users));
+        }
+    });
+}
+
+inquirer
+  .prompt(theQuestions)
+  .then((data) => {
+    const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+    users.push(manager);
+
+    if (data.create == 'Engineer') {
+      askEngineerQuestions();
+    } else if (data.create == 'Intern') {
+      askInternQuestions();
+    } else if (data.create == 'Complete') {
+      fs.writeFileSync('./dist/index.html', generateHtml(users));
+    }
+  })
+  .catch((err) => console.error(err));
