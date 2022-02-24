@@ -19,7 +19,7 @@ describe('Employee', () => {
     });
 
     it('An error will be thrown if email is not presented.', () => {
-        const callBack = () => new Employee('Gus', 1);
+        const callBack = () => new Employee('Gus', 1,);
         expect(callBack).toThrow();
     });
 
