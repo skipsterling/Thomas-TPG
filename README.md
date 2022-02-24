@@ -23,7 +23,7 @@ When you complete this process your html file will be created in the dist folder
 To run tests simply go to the command line once all dependancies have been add by using npm install and type in npm test and you should have a screen that will tell you that all tests PASS.
 
 ## Walkthrough video
-To watch how to use this application please watch this walkthrough video.
+To watch how to use this application please watch this walkthrough video.<a href="https://drive.google.com/file/d/1ooXVzMl4gL9-wmSnmMr5kXEkIyKqykEP/view?usp=sharing">Walkthough Video</a>
 
 ## Questions 
 If you have any questions you can find my contact information through my github <a href="https://github.com/skipsterling">Thomas James</a>
