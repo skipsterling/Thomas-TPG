@@ -11,32 +11,32 @@ function engineerHtml(engineer) {
     <div class="col-4 mb-5">
     <div class="card h-100 bg-light shadow">
     <div class="card-body p-0">
-    <h4 class="card-title bg-primary p-4">${engineer.getName()} <br>${engineer.getRole()}</h4>
-    <ul class="list-group-item p-4">
+    <h4 class="card-title bg-primary p-4">${engineer.getName()}<br />${engineer.getRole()}</h4>
+    <ul class="list-group p-4">
     <li class="list-group-item">ID: ${engineer.getId()}</li>
-    <li class="list-group-item">Email: <a href="mailto:${engineer.getEmail()}>${engineer.getEmail()}</a></li>
-    <li class="list-group-item">Github: <a href="https://github.com/${getGithub()}" target="_blank">${engineer.getGithub()}</a></li>
+    <li class="list-group-item"> Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+    <li class="list-group-item"> GitHub: <a href="https://github.com/${engineer.getGithub()}" target="_blank">${engineer.getGithub()}</a></li>
     </ul>
     </div>
     </div>
     </div>
     `;
 }
-    function managerHtml(manager) {
-        return `
-        <div class="col-4 mb-5">
-        <div class="card h-100 bg-light shadow">
-        <div class="card-body p-0">
-        <h4 class="card-title bg-primary p-4">${manager.getName()} <br>${manager.getRole()}</h4>
-        <ul class="list-group-item p-4">
-        <li class="list-group-item">ID: ${manager.getId()}</li>
-        <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}>${manager.getEmail()}</a></li>
-        <li class="list-group-item">Office Number: ${manager.getOfficeNumber()}</li>
-        </ul>
-        </div>
-        </div>
-        </div>
-        `;
+function managerHtml(manager) {
+    return `
+    <div class="col-4 mb-5">
+    <div class="card h-100 bg-light shadow">
+    <div class="card-body p-0">
+    <h4 class="card-title bg-primary p-4">${manager.getName()}<br />${manager.getRole()}</h4>
+    <ul class="list-group p-4">
+    <li class="list-group-item">ID: ${manager.getId()}</li>
+    <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+    <li class="list-group-item">Office Number: ${manager.getOfficeNumber()}</li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    `;
 }
 function internHtml(intern) {
     return `
@@ -137,12 +137,12 @@ const theQuestions = [
         name: 'email',
         message: 'What is your email?',
         validate: (email) => {
-        valid = email.indexOf('@');
-        if (valid !== -1) {
-            return true;
-        } else {
-            return 'You must enter a valid email address';
-        }
+            valid = email.indexOf('@');
+            if (valid !== -1) {
+                return true;
+            } else {
+                return 'You must enter a valid email address';
+            }
         },
     },
     {
@@ -172,7 +172,7 @@ const engineerQuestions = [
         },
     },
     {
-        type: 'inout',
+        type: 'input',
         name: 'id',
         message: 'what is your id?',
         validate: (id) => {
@@ -198,7 +198,7 @@ const engineerQuestions = [
         name: 'github',
         message: 'What is your Github user name?',
         validate: (github) => {
-return github ? true : 'You must enter your Github user name.'
+            return github ? true : 'You must enter your Github user name.'
         },
     },
     {
@@ -216,7 +216,7 @@ function askEngineerQuestions() {
         if (data.create == 'Engineer') {
             askEngineerQuestions();
         } else if (data.create == 'Intern') {
-        askInternQuestions();
+            askInternQuestions();
         } else if (data.create == 'Complete') {
             fs.writeFileSync('./dist/index.html', generateHtml(users));
         }
@@ -233,7 +233,7 @@ const internQuestions = [
         },
     },
     {
-        type: 'inout',
+        type: 'input',
         name: 'id',
         message: 'what is your id?',
         validate: (id) => {
@@ -259,7 +259,7 @@ const internQuestions = [
         name: 'school',
         message: 'What is your school name?',
         validate: (school) => {
-return school ? true : 'You must enter your school name.'
+            return school ? true : 'You must enter your school name.'
         },
     },
     {
@@ -277,7 +277,7 @@ function askInternQuestions() {
         if (data.create == 'Engineer') {
             askEngineerQuestions();
         } else if (data.create == 'Intern') {
-        askInternQuestions();
+            askInternQuestions();
         } else if (data.create == 'Complete') {
             fs.writeFileSync('./dist/index.html', generateHtml(users));
         }
@@ -285,17 +285,17 @@ function askInternQuestions() {
 }
 
 inquirer
-  .prompt(theQuestions)
-  .then((data) => {
-    const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
-    users.push(manager);
+    .prompt(theQuestions)
+    .then((data) => {
+        const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+        users.push(manager);
 
-    if (data.create == 'Engineer') {
-      askEngineerQuestions();
-    } else if (data.create == 'Intern') {
-      askInternQuestions();
-    } else if (data.create == 'Complete') {
-      fs.writeFileSync('./dist/index.html', generateHtml(users));
-    }
-  })
-  .catch((err) => console.error(err));
+        if (data.create == 'Engineer') {
+            askEngineerQuestions();
+        } else if (data.create == 'Intern') {
+            askInternQuestions();
+        } else if (data.create == 'Complete') {
+            fs.writeFileSync('./dist/index.html', generateHtml(users));
+        }
+    })
+    .catch((err) => console.error(err));
